@@ -1,30 +1,40 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <NavigationLayout v-if="show"></NavigationLayout>
+  <AdminNavLayout v-if="!show"></AdminNavLayout>
+
+  <v-content>
+    <router-view></router-view>
+  </v-content>
+  <FooterLayout v-if="show"></FooterLayout>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<script>
+import NavigationLayout from "./components/Layout/NavigationLayout.vue"
+import FooterLayout from "./components/Layout/FooterLayout.vue"
+import AdminNavLayout from "./components/Layout/AdminLayout.vue"
+export default {
+  name: "App",
+  components: {
+    NavigationLayout,
+    FooterLayout,
+    AdminNavLayout
+  },
+  data() {
+    return {
+      show: true
+    };
+  },
+  watch: {
+    $route(to) {
+      if (to.path.startsWith("/admin")) {
+        this.show = false;
+      }
+      else
+      {
+        this.show = true;
+      }
+    }
+  }
+};
+</script>
+<style></style>
